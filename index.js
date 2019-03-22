@@ -1,11 +1,11 @@
-let consts = require('./consts/consts.js');
+let consts = require('./lib/consts.js');
+let httpError = require('./lib/httpError.js');
+let helper = require('./lib/helpers.js');
 
 
-module.exports.hasJsonParam = function (paramArray) {
+var hasJsonParam = module.exports.hasJsonParam = function (paramArray) {
     return hasJsonParam[paramArray] || (hasJsonParam[paramArray] = function (req, res, next) {
-        console.log("INVOKING MY MIDDLEWARE !!");
         var jsonBody = req.body;
-        console.log("REQ BODY IS !!", jsonBody);
         try {
             var counter = paramArray.length;
             let responseArray = [];
@@ -15,13 +15,13 @@ module.exports.hasJsonParam = function (paramArray) {
                 }
                 counter--;
                 if (counter == 0 && responseArray.length > 0) {
-                    sendError(new httpError(consts.BAD_REQUEST, { response: responseArray }), req, res);
+                    helper.sendError(new httpError(consts.BAD_REQUEST, { response: responseArray }), req, res);
                 } else if (counter == 0) {
                     next();
                 }
             }
         } catch (e) {
-            sendError(new httpError(consts.BAD_REQUEST, { response: consts.INVALID_JSON }), req, res);
+            helper.sendError(new httpError(consts.BAD_REQUEST, { response: consts.INVALID_JSON }), req, res);
         }
     })
 };
