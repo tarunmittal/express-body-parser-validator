@@ -1,11 +1,9 @@
 # express-body-parser-validator
 
-Body parser validator is an express middleware, which can be used seamlessly with or without body parser. It ensures that mandatory request parameters are present in request with minimal coding.
+Body parser validator is an express middleware, which can be used in sync with the [body-parser](https://www.npmjs.com/package/body-parser) package. It ensures that mandatory request parameters are present in request body with minimal coding.
 
 
-**Note** This package validates, if input `JSON` has mandatory `key`. This will grow to handle any kind of request input as well as more complex validations. 
-
-[Learn about the anatomy of an HTTP transaction in Node.js](https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/).
+**Note** This package is used in sync with the [body-parser](https://www.npmjs.com/package/body-parser) package, which should be called before this middleware.
 
 
 ## Installation
@@ -19,7 +17,7 @@ $ npm install express-body-parser-validator
 <!-- eslint-disable no-unused-vars -->
 
 ```js
-var bodyParserValidator = require('express-body-parser-validator').hasJsonParam
+var bodyParserValidator = require('express-body-parser-validator').hasReqParam
 ```
 
 The `bodyParserValidator` *function* can be used directly as an express middleware. It takes an array of mandatory fields as parameter. 
@@ -30,12 +28,15 @@ The `bodyParserValidator` *function* can be used directly as an express middlewa
 
 ### Express route-specific
 
-This example demonstrates adding body parsers specifically to the routes that
-need them. In general, this is the most recommended way to use body-parser with
-Express.
+This example demonstrates adding body parsers validator specifically to the routes that
+need them. In general, this is the most recommended way to use express-body-parser-validator with
+Express and Body Parser.
 
 ```js
 var express = require('express')
+var bodyParser = require('body-parser')
+var bodyParserValidator = require('express-body-parser-validator').hasJsonParam
+
 
 var app = express()
 
@@ -46,15 +47,21 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 // POST /auth gets urlencoded bodies
-app.post('/auth', bodyParserValidator(["email", "password"]), function (req, res) {
-  //Controll reaches here, only if request JSON has keys: "email", "password"
+app.post('/auth/sign-up', [jsonParser, bodyParserValidator(["email", "password", "name"])], function (req, res) {
+      //Controll reaches here, only if request has keys: "email", "password", and "name"
+
+    res.send();
 })
 
 // POST /api/paginate-results gets JSON bodies
 // Usage along with body-parser
-app.post('/api/paginate-results', [jsonParser, bodyParserValidator(["page_no", "limit"])], function (req, res) {
-  //Controll reaches here, only if request JSON has keys: "page_no", "limit"
+app.post('/auth/login', [urlencodedParser, bodyParserValidator(["email", "password"])], function (req, res) {
+    res.send();
+  //Controll reaches here, only if request has keys: "email", "password"
 })
+
+app.listen(3000)
+
 ```
 
 

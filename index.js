@@ -3,14 +3,14 @@ let httpError = require('./lib/httpError.js');
 let helper = require('./lib/helpers.js');
 
 
-var hasJsonParam = module.exports.hasJsonParam = function (paramArray) {
-    return hasJsonParam[paramArray] || (hasJsonParam[paramArray] = function (req, res, next) {
-        var jsonBody = req.body;
+var hasReqParam = module.exports.hasReqParam = function (paramArray) {
+    return hasReqParam[paramArray] || (hasReqParam[paramArray] = function (req, res, next) {
+        var reqBody = req.body;
         try {
             var counter = paramArray.length;
             let responseArray = [];
             for (var i = 0; i < paramArray.length; i++) {
-                if (!jsonBody.hasOwnProperty(paramArray[i])) {
+                if (!reqBody[paramArray[i]]) {
                     responseArray.push(consts.MISSING_PARAM(paramArray[i]));
                 }
                 counter--;
@@ -21,7 +21,7 @@ var hasJsonParam = module.exports.hasJsonParam = function (paramArray) {
                 }
             }
         } catch (e) {
-            helper.sendError(new httpError(consts.BAD_REQUEST, { response: consts.INVALID_JSON }), req, res);
+            helper.sendError(new httpError(consts.BAD_REQUEST, { response: consts.INVALID_BODY }), req, res);
         }
     })
 };
