@@ -1,8 +1,5 @@
 # express-body-parser-validator
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![Build Status][travis-image]][travis-url]
-[![Test Coverage][coveralls-image]][coveralls-url]
+
 Body parser validator is an express middleware, which can be used seamlessly with or without body parser. It ensures that mandatory request parameters are present in request with minimal coding.
 
 
