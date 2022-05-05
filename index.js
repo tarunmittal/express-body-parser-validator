@@ -10,7 +10,7 @@ var hasReqParam = module.exports.hasReqParam = function (paramArray) {
             var counter = paramArray.length;
             let responseArray = [];
             for (var i = 0; i < paramArray.length; i++) {
-                if (!reqBody[paramArray[i]]) {
+                if (!reqBody.hasOwnProperty([paramArray[i]])) {
                     responseArray.push(consts.MISSING_PARAM(paramArray[i]));
                 }
                 counter--;
