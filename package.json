@@ -1,6 +1,6 @@
 {
   "name": "express-body-parser-validator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Body parser validator is an express middleware, which can be used seamlessly with or without body parser. It ensures that mandatory request parameters are present in request with minimal coding.",
   "main": "index.js",
   "scripts": {
